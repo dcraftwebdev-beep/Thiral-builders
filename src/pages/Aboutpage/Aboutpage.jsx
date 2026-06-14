@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 // Adjust these paths to match where AboutPage.jsx lives in your tree
 import Reveal from '../../components/Reveal/Reveal.jsx';
 import DimensionRule from '../../components/DimensionRule/DimensionRule.jsx';
-import styles from './AboutPage.module.css';
+import styles from './Aboutpage.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
 

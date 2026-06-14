@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import styles from './ContactPage.module.css';
+import styles from './Contactpage.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
