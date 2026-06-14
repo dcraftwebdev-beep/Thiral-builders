@@ -1,4 +1,4 @@
-# Lumora Studio — React + Vite + Supabase
+# Thiral — React + Vite + Supabase
 
 A premium architecture & interior-design website with a Lenis-powered smooth
 scrolling experience, GSAP + Framer Motion animations, and a complete
