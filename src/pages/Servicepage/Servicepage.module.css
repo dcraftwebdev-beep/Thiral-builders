@@ -1,0 +1,409 @@
+.page {
+  background: var(--white);
+  color: var(--ink);
+}
+
+/* ===================== HERO (parallax image) ===================== */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+  padding: var(--section-pad) 0;
+  color: var(--brass);
+}
+
+.heroBg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* overscaled so the parallax drift never exposes an edge */
+.heroImg {
+  position: absolute;
+  top: -12%;
+  left: 0;
+  width: 100%;
+  height: 124%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.heroScrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 17, 21, 0.5) 0%,
+    rgba(15, 17, 21, 0.4) 45%,
+    rgba(15, 17, 21, 0.7) 100%
+  );
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.heroEyebrow {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #fffce1;
+  margin-bottom: clamp(16px, 3vh, 28px);
+}
+
+.heroTitle {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(64px, 13vw, 200px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin: 0;
+  color: #fffce1;
+}
+
+.lineMask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+
+.line {
+  display: block;
+  will-change: transform;
+}
+
+.heroIntro {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: clamp(16px, 3.5vw, 29px);
+  line-height: 1.7;
+  color: #fffce1;
+  margin: clamp(20px, 3.5vh, 32px) 0 0;
+  max-width: 45ch;
+}
+
+/* ===================== IMMERSIVE HORIZONTAL ===================== */
+.immersive {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--stone);
+  color: var(--brass);
+}
+
+.immersiveTop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 3vw, 40px);
+  padding: clamp(24px, 5vh, 48px) clamp(20px, 4vw, 64px) 0;
+}
+
+.immersiveLabel {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brass-soft);
+  white-space: nowrap;
+}
+
+.progressWrap {
+  flex: 1;
+  height: 2px;
+  background: rgba(233, 231, 225, 0.18);
+  overflow: hidden;
+}
+
+.progressBar {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--brass);
+  transform-origin: 0% 50%;
+  transform: scaleX(0);
+}
+
+.counter {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--brass-soft);
+  white-space: nowrap;
+}
+
+.counter span {
+  color: var(--brass);
+}
+
+.viewport {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.track {
+  display: flex;
+  gap: clamp(28px, 4vw, 72px);
+  padding: 0 clamp(20px, 4vw, 64px);
+  will-change: transform;
+}
+
+.panel {
+  flex: 0 0 auto;
+  width: min(1120px, 86vw);
+  height: min(70vh, 640px);
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(28px, 4vw, 72px);
+  align-items: center;
+}
+
+.panelFigure {
+  position: relative;
+  height: 100%;
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+.panelImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  will-change: transform;
+}
+
+.panelGhost {
+  position: absolute;
+  left: -0.08em;
+  bottom: -0.22em;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(140px, 22vw, 340px);
+  line-height: 0.8;
+  color: rgba(255, 255, 255, 0.16);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.panelText {
+  padding-right: clamp(0px, 2vw, 32px);
+}
+
+.panelCode {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brass-soft);
+  margin-bottom: clamp(16px, 3vh, 28px);
+}
+
+.panelName {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(38px, 4.6vw, 76px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin: 0 0 clamp(18px, 3vh, 28px);
+}
+
+.panelCopy {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(15px, 1.4vw, 19px);
+  line-height: 1.75;
+  color: var(--matblack);
+  max-width: 52ch;
+  margin: 0 0 clamp(24px, 4vh, 36px);
+}
+
+.deliverables {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.deliverable {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--brass-soft);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--matblack);
+}
+
+/* ===================== CTA ===================== */
+.ctacontainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  max-width: 1880px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 64px);
+}
+
+.cta {
+  background: var(--stone);
+  color: var(--brass);
+  padding: var(--section-pad) 0;
+}
+
+.ctaTitle {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(36px, 5.5vw, 80px);
+  line-height: 1.05;
+  margin: 0;
+}
+
+.ctaBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 22px 6px 6px;
+  border-radius: 999px;
+  background: var(--white);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0.03em;
+  color: var(--ink);
+  text-decoration: none;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+  transition: box-shadow 0.2s var(--ease-soft);
+}
+
+.ctaArrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--brass);
+  flex-shrink: 0;
+  transition: background 0.2s var(--ease-soft);
+}
+
+.ctaArrow svg {
+  width: 16px;
+  height: 16px;
+  fill: #fff;
+}
+
+.ctaBtn:hover .ctaArrow {
+  background: var(--brass-soft);
+}
+
+.ctaBtn:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 4px;
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 860px) {
+  .hero {
+    min-height: 100vh;
+    padding: var(--section-pad) 0;
+  }
+
+  .immersive {
+    height: auto;
+    overflow: visible;
+    padding: var(--section-pad) 0 calc(var(--section-pad) * 0.5);
+  }
+
+  .immersiveTop {
+    position: static;
+    padding: 0 clamp(20px, 5vw, 32px) clamp(24px, 5vh, 40px);
+  }
+
+  .viewport {
+    height: auto;
+    display: block;
+  }
+
+  .track {
+    flex-direction: column;
+    gap: clamp(48px, 9vh, 96px);
+    padding: 0 clamp(20px, 5vw, 32px);
+    transform: none !important;
+  }
+
+  .panel {
+    width: 100%;
+    height: auto;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .panelFigure {
+    aspect-ratio: 4 / 3;
+    height: auto;
+  }
+
+  .panelGhost {
+    font-size: clamp(96px, 30vw, 180px);
+  }
+
+  .ctacontainer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+}
+
+/* ===================== REDUCED MOTION ===================== */
+@media (prefers-reduced-motion: reduce) {
+  .heroImg { top: 0; height: 100%; }
+
+  .immersive {
+    height: auto;
+    overflow: visible;
+    padding: var(--section-pad) 0;
+  }
+  .immersiveTop { position: static; padding: 0 clamp(20px, 4vw, 64px) 40px; }
+  .viewport { height: auto; display: block; }
+  .track {
+    flex-direction: column;
+    gap: clamp(48px, 9vh, 96px);
+    transform: none !important;
+  }
+  .panel {
+    width: 100%;
+    height: auto;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .panelFigure { aspect-ratio: 4 / 3; height: auto; }
+}

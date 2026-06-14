@@ -1,0 +1,313 @@
+/* ===================================================================
+ * HEADER BAR
+ * =================================================================== */
+.header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  padding: 22px 0;
+  transition: padding 0.4s var(--ease-soft), background 0.4s var(--ease-soft),
+    backdrop-filter 0.4s var(--ease-soft), border-color 0.4s var(--ease-soft);
+  border-bottom: 1px solid transparent;
+}
+
+.scrolled {
+  padding: 12px 0;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border-bottom: 1px solid rgba(15, 17, 21, 0.07);
+}
+
+.menuOpen {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom-color: transparent;
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(20px, 4vw, 48px);
+  height: 44px;
+}
+
+/* ---------- Logo ---------- */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--ink);
+  z-index: 110;
+  height: 100%;
+}
+
+.logoImage {
+  width: auto;
+  height: 58px;
+  object-fit: contain;
+  display: block;
+}
+
+.logoMark {
+  display: inline-flex;
+  align-items: center;
+  color: var(--brass);
+  transition: transform 0.5s var(--ease-soft);
+}
+
+.logo:hover .logoMark {
+  transform: translateY(-2px) rotate(-4deg);
+}
+
+.logoText {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+}
+
+.menuOpen .logo { color: var(--brass); }
+.menuOpen .logoMark { color: var(--brass); }
+
+/* ===================================================================
+ * DESKTOP NAV
+ * =================================================================== */
+.nav {
+  display: flex;
+  gap: clamp(24px, 3vw, 44px);
+  align-items: center;
+}
+
+.navLink {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  padding-bottom: 4px;
+}
+
+.navFlip {
+  position: relative;
+  display: inline-block;
+  height: 1.2em;
+  line-height: 1.2em;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.navFlipLine {
+  display: block;
+  height: 1.2em;
+  line-height: 1.2em;
+  transition: transform 0.5s var(--ease-soft);
+}
+
+.navLink:hover .navFlipLine {
+  transform: translateY(-100%);
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--brass);
+  transform: translate(-50%, 4px) scale(0);
+  transition: transform 0.4s var(--ease-soft);
+}
+
+.navActive::after {
+  transform: translate(-50%, 0) scale(1);
+}
+
+.cta { z-index: 110; }
+
+/* ===================================================================
+ * SCROLL PROGRESS
+ * =================================================================== */
+.progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--brass);
+  transform-origin: 0% 50%;
+  transform: scaleX(0);
+}
+
+.menuOpen .progress { opacity: 0; }
+
+/* ===================================================================
+ * BURGER — mobile only
+ * =================================================================== */
+.burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 110;
+}
+
+.burger span {
+  display: block;
+  height: 2px;
+  width: 26px;
+  margin-left: auto;
+  background: var(--ink);
+  transition: transform 0.4s var(--ease-soft), width 0.4s var(--ease-soft),
+    background 0.4s var(--ease-soft);
+}
+
+.burger span:last-child { width: 18px; }
+
+.burgerOpen span {
+  background: var(--ink);
+  width: 26px;
+}
+
+.burgerOpen span:first-child {
+  transform: translateY(4px) rotate(45deg);
+}
+
+.burgerOpen span:last-child {
+  transform: translateY(-4px) rotate(-45deg);
+}
+
+/* ===================================================================
+ * MOBILE DROPDOWN MENU (replaces full-screen overlay)
+ * =================================================================== */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 98;
+  background: var(--white);
+  padding: 100px clamp(20px, 6vw, 40px) 36px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.08);
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  will-change: clip-path;
+}
+
+.overlayNav {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid var(--line);
+}
+
+.overlayItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  padding: 18px 0;
+}
+
+.overlayIndex {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--brass-soft);
+}
+
+.overlayMask {
+  display: block;
+  overflow: hidden;
+}
+
+.overlayLine {
+  display: block;
+}
+
+.overlayLink {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: clamp(20px, 5vw, 28px);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: color 0.3s var(--ease-soft);
+}
+
+.overlayLink:hover { color: var(--brass); }
+
+/* small brass arrow on each row */
+.overlayLink::after {
+  content: '→';
+  font-size: 0.75em;
+  color: var(--brass);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.3s ease, transform 0.3s var(--ease-soft);
+  display: inline-block;
+}
+
+.overlayLink:hover::after {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.overlayFoot {
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.overlayMeta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  opacity: 0.6;
+}
+
+/* ===================================================================
+ * RESPONSIVE — mobile: only logo (left) + burger (right)
+ * =================================================================== */
+@media (max-width: 900px) {
+  .nav { display: none; }
+  .cta { display: none !important; }   /* beat global .thiral-btn rules */
+  .burger { display: flex; }
+  .logoImage { height: 48px; }
+
+  /* also hide the Contact button inside the opened dropdown */
+  .overlayFoot :global(.thiral-btn) { display: none; }
+  .overlayFoot { justify-content: flex-start; }
+}
+
+/* ===================================================================
+ * REDUCED MOTION
+ * =================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .navFlipLine,
+  .overlayLink,
+  .logoMark,
+  .burger span { transition: none; }
+}

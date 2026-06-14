@@ -1,0 +1,498 @@
+.page {
+  background: var(--white);
+  color: var(--ink);
+}
+
+/* ===================================================================
+ * 1. PINNED CINEMATIC HERO
+ * =================================================================== */
+.hero {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--stone);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroPhoto { position: absolute; inset: 0; z-index: 0; will-change: transform, opacity, filter; }
+.heroPhoto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.heroPhotoVeil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(15,17,21,0.35) 0%, rgba(15,17,21,0.2) 45%, rgba(15,17,21,0.55) 100%);
+}
+
+.heroInner { position: relative; z-index: 2; text-align: center; padding: 0 24px; }
+
+.heroTitle {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(64px, 16vw, 280px);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  color: var(--brass);
+  margin: 0;
+  will-change: transform, color;
+}
+
+.heroMask { display: block; overflow: hidden; padding-bottom: 0.06em; }
+.heroWord { display: block; will-change: transform; }
+
+.heroMeta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: clamp(20px, 4vh, 40px);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brass-soft);
+  will-change: transform, opacity;
+}
+
+.heroMetaLine { width: clamp(40px, 8vw, 88px); height: 1px; background: rgba(233,231,225,0.5); }
+
+/* ===================================================================
+ * 2. KINETIC MANIFESTO
+ * =================================================================== */
+.manifesto {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--stone);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.manifestoBg { position: absolute; inset: 0; z-index: 0; opacity: 0.32; will-change: transform; }
+.manifestoBg img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.manifestoBg::after { content: ''; position: absolute; inset: 0; background: rgba(15,17,21,0.4); }
+
+.manifestoText {
+  position: relative;
+  z-index: 2;
+  max-width: min(1100px, 90vw);
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(34px, 6.5vw, 104px);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  color: var(--brass);
+}
+
+.manifestoWord { display: inline-block; margin-right: 0.26em; will-change: opacity, filter; }
+
+/* ===================================================================
+ * 3. STORY COLLAGE
+ * =================================================================== */
+.story {
+  padding: var(--section-pad) 0;
+  overflow: hidden;
+}
+
+.storyStage {
+  position: relative;
+  margin-top: clamp(32px, 5vh, 56px);
+  min-height: clamp(560px, 86vh, 860px);
+}
+
+/* Giant outlined ghost type behind everything */
+.storyGhost {
+  position: absolute;
+  top: -4%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(120px, 21vw, 340px);
+  line-height: 0.82;
+  letter-spacing: -0.03em;
+  text-align: center;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(15, 17, 21, 0.12);
+  white-space: nowrap;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.storyFigure {
+  position: absolute;
+  overflow: hidden;
+  border-radius: 18px;
+  box-shadow: 0 30px 80px -30px rgba(15, 17, 21, 0.35);
+  will-change: clip-path;
+}
+
+.storyFigure .storyParallax {
+  width: 100%;
+  height: 124%;
+  margin-top: -12%;
+  object-fit: cover;
+  display: block;
+  will-change: transform;
+}
+
+/* Big image, upper-left */
+.storyFigA {
+  left: 0;
+  top: 10%;
+  width: 46%;
+  aspect-ratio: 3 / 4;
+  z-index: 1;
+}
+
+/* Smaller image, lower-right — overlaps A */
+.storyFigB {
+  right: 1%;
+  top: 34%;
+  width: 40%;
+  aspect-ratio: 4 / 5;
+  z-index: 2;
+}
+
+/* Floating copy card */
+.storyCard {
+  position: absolute;
+  left: 32%;
+  bottom: 2%;
+  z-index: 3;
+  width: min(440px, 44%);
+  background: var(--white);
+  border: 1px solid var(--line-light);
+  border-radius: 18px;
+  padding: clamp(24px, 3vw, 40px);
+  box-shadow: 0 24px 60px -28px rgba(15, 17, 21, 0.4);
+}
+
+.storyTitle {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--brass);
+  font-size: clamp(28px, 3vw, 44px);
+  line-height: 1.08;
+  margin: 0 0 clamp(16px, 2.5vh, 24px);
+}
+
+.storyCard p {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: clamp(14px, 1.2vw, 17px);
+  line-height: 1.7;
+  color: rgba(15, 17, 21, 0.72);
+  margin: 0 0 0.9rem;
+}
+
+.storyCard p:last-child { margin-bottom: 0; }
+
+
+/* ===================================================================
+ * 4. BUILD THE HOUSE (pinned assembly)
+ * =================================================================== */
+.build {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--stone);
+  color: var(--brass);
+}
+
+.buildInner {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  align-items: center;
+  padding: clamp(40px, 8vh, 96px) clamp(20px, 4vw, 64px) clamp(24px, 5vh, 56px);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.buildHead { text-align: center; }
+
+.buildTitle {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(34px, 5vw, 72px);
+  line-height: 1.05;
+  margin: 16px 0 10px;
+}
+
+.buildHint {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brass-soft);
+}
+
+.buildStage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+.house {
+  width: min(760px, 100%);
+  height: auto;
+  max-height: 62vh;
+  overflow: visible;
+  will-change: transform;
+}
+
+/* every animated piece pivots about its own centre */
+.buildPart { transform-box: fill-box; }
+
+/* blueprint + structural styling */
+.bpGrid { color: rgba(233, 231, 225, 0.16); }
+
+.ground {
+  stroke: var(--brass-soft);
+  stroke-width: 2;
+  stroke-dasharray: 6 8;
+  opacity: 0.6;
+}
+
+.struct { fill: #e9e7e1; }       /* light stone — reads on the dark bg */
+.wall {
+  fill: #ffffff;
+  stroke: rgba(15, 17, 21, 0.18);
+  stroke-width: 2;
+}
+.accent { fill: #c0883c; }        /* brass-like door */
+.glass { fill: #9fb2bd; }         /* window glass */
+.frame { stroke: rgba(15, 17, 21, 0.35); stroke-width: 2; }
+.node { fill: #c0883c; }
+.doorknob { fill: #1f2127; }
+
+/* ===================================================================
+ * 5. STATS
+ * =================================================================== */
+.stats { background: var(--stone); color: var(--brass); padding: clamp(56px, 9vh, 104px) 0; }
+
+.statsGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(24px, 4vw, 64px); }
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 20px;
+  border-left: 1px solid rgba(233, 231, 225, 0.22);
+  will-change: transform, opacity;
+}
+
+.statNumber {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(40px, 4.5vw, 72px);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.statLabel {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brass-soft);
+}
+
+/* ===================================================================
+ * 6. HOW WE WORK
+ * =================================================================== */
+.values { padding: var(--section-pad) 0; }
+
+.valuesTitle {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--brass);
+  font-size: clamp(34px, 4.5vw, 60px);
+  margin: 20px 0 clamp(40px, 6vh, 64px);
+}
+
+.valuesList { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-light); }
+
+.valueRow {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(20px, 4vw, 64px);
+  padding: clamp(28px, 4.5vh, 56px) clamp(12px, 2vw, 32px);
+  border-bottom: 1px solid var(--line-light);
+  overflow: hidden;
+  will-change: clip-path, transform;
+}
+
+.valueFill {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--stone);
+  transform: scaleY(0);
+  transform-origin: bottom center;
+}
+
+.valueNum, .valueMain, .valueArrow { position: relative; z-index: 1; }
+
+.valueNum {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  color: var(--brass);
+  will-change: transform, opacity;
+}
+
+.valueTitle {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(26px, 3.4vw, 48px);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  margin: 0 0 8px;
+  transition: color 0.4s var(--ease-soft), transform 0.45s var(--ease-soft);
+}
+
+.valueCopy {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: clamp(15px, 1.3vw, 18px);
+  line-height: 1.6;
+  color: rgba(15, 17, 21, 0.62);
+  margin: 0;
+  max-width: 56ch;
+  transition: color 0.4s var(--ease-soft);
+}
+
+.valueArrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--line-light);
+  flex-shrink: 0;
+  transition: border-color 0.4s var(--ease-soft), transform 0.45s var(--ease-soft);
+}
+
+.valueArrow svg {
+  width: 16px; height: 16px;
+  fill: var(--ink);
+  transform: rotate(-45deg);
+  transition: fill 0.4s var(--ease-soft), transform 0.45s var(--ease-soft);
+}
+
+.valueRow:hover .valueTitle { color: var(--brass); transform: translateX(10px); }
+.valueRow:hover .valueCopy,
+.valueRow:hover .valueNum { color: var(--brass-soft); }
+.valueRow:hover .valueArrow { border-color: var(--brass); }
+.valueRow:hover .valueArrow svg { fill: var(--brass); transform: rotate(0deg); }
+
+/* ===================================================================
+ * 7. CTA
+ * =================================================================== */
+.cta { 
+  background: var(--stone); color: var(--brass); padding: var(--section-pad) 0; 
+display: flex;
+flex-direction: column;
+gap: 32px;align-items: center;
+justify-content: center;}
+
+.ctaTitle {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(36px, 5.5vw, 80px);
+  line-height: 1.05;
+  margin: 0 0 clamp(28px, 5vh, 48px);
+}
+
+.ctaBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 22px 6px 6px;
+  border-radius: 999px;
+  background: var(--white);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0.03em;
+  color: var(--ink);
+  text-decoration: none;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  transition: box-shadow 0.2s var(--ease-soft);
+}
+
+.ctaArrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--brass);
+  flex-shrink: 0;
+  transition: background 0.2s var(--ease-soft);
+}
+
+.ctaArrow svg { width: 16px; height: 16px; fill: #fff; }
+.ctaBtn:hover .ctaArrow { background: var(--brass-soft); }
+.ctaBtn:focus-visible { outline: 2px solid var(--brass); outline-offset: 4px; }
+
+/* ===================================================================
+ * RESPONSIVE
+ * =================================================================== */
+@media (max-width: 1024px) {
+  .statsGrid { grid-template-columns: repeat(2, 1fr); gap: 36px; }
+}
+
+@media (max-width: 860px) {
+  /* Story collage -> clean stack */
+  .storyStage { min-height: 0; display: flex; flex-direction: column; gap: 20px; }
+  .storyGhost {
+    position: static;
+    transform: none;
+    font-size: clamp(72px, 22vw, 120px);
+    text-align: left;
+    margin-bottom: 8px;
+  }
+  .storyFigure { position: static; width: 100%; }
+  .storyFigA, .storyFigB { aspect-ratio: 4 / 3; }
+  .storyCard { position: static; width: 100%; }
+
+  /* Build section */
+  .house { max-height: 48vh; }
+
+  /* Values */
+  .valueRow { grid-template-columns: auto 1fr; gap: 16px 20px; }
+  .valueArrow { display: none; }
+}
+
+/* ===================================================================
+ * REDUCED MOTION — unwind pins, show finished states
+ * =================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .hero { height: auto; padding: calc(var(--section-pad) * 1.5) 0; }
+  .heroPhoto { opacity: 1; }
+
+  .manifesto { height: auto; padding: var(--section-pad) 0; }
+  .manifestoWord { opacity: 1; filter: none; }
+
+  .storyFigure { clip-path: none; }
+  .storyFigure .storyParallax { height: 100%; margin-top: 0; }
+
+  /* House shows fully built, no pin */
+  .build { height: auto; padding: var(--section-pad) 0; }
+  .ground { opacity: 0.6; }
+
+  .valueRow { clip-path: none; }
+}

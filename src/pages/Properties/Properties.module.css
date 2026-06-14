@@ -1,0 +1,420 @@
+.page {
+  background: #ffffff;
+  color: #0f1115;
+  overflow-x: hidden;
+}
+
+/* ===================== PINNED HORIZONTAL HERO ===================== */
+.horizontal {
+  position: relative;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+/* Full-bleed background photo behind the headline */
+.horizontalBg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  will-change: transform;
+}
+
+.horizontalBgWash {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.65); /* Adjust opacity as needed */
+  pointer-events: none;
+}
+
+/* The track: one long nowrap line, starts fully offscreen right */
+.horizontalText {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  width: max-content;
+  white-space: nowrap;
+  gap: clamp(16px, 4vw, 56px);
+  padding-left: 100vw;
+  margin: 0;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-weight: 800;
+  font-size: clamp(64px, 12vw, 180px);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  will-change: transform;
+}
+
+.hWord {
+  display: inline-block;
+}
+
+/* SplitText chars need to be transformable */
+.hWord :global(div),
+.hWord :global(.char) {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* Inline photo capsule riding along in the headline */
+.chip {
+  display: inline-block;
+  width: clamp(140px, 16vw, 300px);
+  height: clamp(64px, 7.5vw, 140px);
+  border-radius: 80px;
+  overflow: hidden;
+  flex: none;
+  will-change: transform;
+}
+
+.chipImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  will-change: transform;
+}
+
+/* Eyebrow pinned to the top of the hero */
+.eyebrow {
+  position: absolute;
+  z-index: 2;
+  top: clamp(96px, 14vh, 140px);
+  left: clamp(20px, 4vw, 64px);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.eyebrowDot {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #0f1115;
+  border-radius: 50%;
+  position: relative;
+  flex: none;
+}
+
+.eyebrowDot::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  background: #0f1115;
+  border-radius: 50%;
+}
+
+.scrollHint {
+  position: absolute;
+  z-index: 2;
+  bottom: clamp(28px, 5vh, 48px);
+  left: clamp(20px, 4vw, 64px);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #9aa1ab;
+}
+
+/* ===================== INTRO ROW ===================== */
+.introRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+  max-width: 1880px;
+  margin: 0 auto;
+  padding: clamp(56px, 8vh, 96px) clamp(20px, 4vw, 64px) clamp(40px, 6vh, 72px);
+}
+
+.intro {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: clamp(17px, 1.3vw, 21px);
+  line-height: 1.55;
+  color: #3d4450;
+  margin: 0;
+  max-width: 560px;
+}
+
+.exploreBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  background: #0f1115;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 16px 20px 16px 26px;
+  border-radius: 14px;
+  text-decoration: none;
+  border: 2px solid #0f1115;
+  box-shadow: 4px 4px 0 rgba(15, 17, 21, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex: none;
+}
+
+.exploreBtn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 rgba(15, 17, 21, 0.18);
+}
+
+.exploreBtn:focus-visible {
+  outline: 3px solid #0f1115;
+  outline-offset: 3px;
+}
+
+.exploreArrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===================== MARQUEE ===================== */
+.marquee {
+  overflow: hidden;
+  border-top: 1.5px solid #0f1115;
+  border-bottom: 1.5px solid #0f1115;
+  padding: clamp(14px, 1.8vh, 22px) 0;
+  margin-bottom: clamp(56px, 8vh, 104px);
+}
+
+.marqueeTrack {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.marqueeGroup {
+  display: flex;
+  flex: none;
+}
+
+.marqueeItem {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(20px, 2.4vw, 40px);
+  padding-right: clamp(20px, 2.4vw, 40px);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-weight: 700;
+  font-size: clamp(18px, 1.8vw, 28px);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #0f1115;
+}
+
+.marqueeStar {
+  font-size: 0.7em;
+  color: #9aa1ab;
+}
+
+/* ===================== LISTINGS ===================== */
+.listings {
+  padding: 0 clamp(20px, 4vw, 64px) clamp(64px, 9vh, 120px);
+  max-width: 1880px;
+  margin: 0 auto;
+}
+
+/* --- Card grid --- */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(20px, 2vw, 32px);
+}
+
+.card {
+  position: relative;
+  border-radius: 7px;
+  overflow: hidden;
+  height: clamp(390px, 40vw, 400px);
+  max-height: 400px;
+  isolation: isolate;
+}
+
+.cardImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card:hover .cardImage {
+  transform: scale(1.04);
+}
+
+/* --- "For Rent" / "For Buy" pill --- */
+.tag {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  color: #0f1115;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 10px 18px;
+  border-radius: 7px;
+}
+
+.tagIcon {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* --- Bottom info overlay with progressive blur --- */
+.cardOverlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 90px 32px 28px;
+  color: #ffffff;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 24, 18, 0) 0%,
+    rgba(20, 24, 18, 0.35) 45%,
+    rgba(20, 24, 18, 0.6) 100%
+  );
+}
+
+.cardOverlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 60%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 60%);
+  z-index: -1;
+}
+
+.cardName {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: clamp(17px, 1.4vw, 21px);
+  font-weight: 500;
+  margin: 0 0 10px;
+}
+
+.cardPrice {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(30px, 2.6vw, 40px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 22px;
+}
+
+.cardStats {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 1.6vw, 24px);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: clamp(15px, 1.2vw, 18px);
+  font-weight: 500;
+}
+
+.stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.statDivider {
+  width: 1px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 1024px) {
+  .introRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 760px) {
+  .horizontalText {
+    font-size: clamp(48px, 16vw, 84px);
+    gap: clamp(12px, 4vw, 24px);
+  }
+
+  .chip {
+    width: clamp(96px, 24vw, 150px);
+    height: clamp(44px, 11vw, 68px);
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    height: 70vw;
+    min-height: 380px;
+  }
+
+  .cardOverlay {
+    padding: 70px 22px 22px;
+  }
+
+  .tag {
+    top: 14px;
+    right: 14px;
+    font-size: 13px;
+    padding: 8px 14px;
+  }
+}
+
+/* ===================== REDUCED MOTION ===================== */
+/* GSAP is gated behind matchMedia in JS. With no animation, the
+   headline must still be readable — kill the offscreen offset. */
+@media (prefers-reduced-motion: reduce) {
+  .horizontal {
+    height: auto;
+    padding: clamp(120px, 18vh, 200px) clamp(20px, 4vw, 64px) clamp(48px, 7vh, 88px);
+  }
+
+  .horizontalText {
+    padding-left: 0;
+    white-space: normal;
+    flex-wrap: wrap;
+    font-size: clamp(44px, 7.6vw, 116px);
+  }
+
+  .eyebrow {
+    position: static;
+    margin-bottom: 24px;
+  }
+
+  .scrollHint {
+    display: none;
+  }
+
+  .cardImage {
+    transition: none;
+  }
+}

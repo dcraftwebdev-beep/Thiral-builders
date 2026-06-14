@@ -1,0 +1,164 @@
+.testimonials {
+  background: var(--ink);
+  color: var(--stone);
+  padding: var(--section-pad) 0;
+  text-align: center;
+}
+
+.stage {
+  min-height: clamp(220px, 30vw, 300px);
+  display: grid;
+  place-items: center;
+  margin-top: 48px;
+}
+
+.figure {
+  max-width: 880px;
+  margin-inline: auto;
+}
+
+.quote {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 3.2vw, 40px);
+  line-height: 1.35;
+}
+
+.caption {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.name {
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.role {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--brass-soft);
+}
+
+/* ── Controls row: prev arrow · dots · next arrow ── */
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 36px;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
+.dot {
+  width: 28px;
+  height: 2px;
+  background: var(--line-light);
+  transition: background 0.4s var(--ease-soft), width 0.4s var(--ease-soft);
+}
+
+.dotActive {
+  background: var(--brass-soft);
+  width: 44px;
+}
+
+/* ── Arrow buttons ── */
+.arrowBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.arrowCircle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: var(--brass);
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+  transition: background 0.2s var(--ease-soft);
+}
+
+.arrowCircle svg {
+  width: 25px;
+  height: 25px;
+  fill: #fff;
+  position: absolute;
+  transition: transform 0.6s var(--ease-soft), opacity 0.45s ease;
+}
+
+/* Prev arrow — flipped horizontally */
+.arrowCircle:not(.arrowNext) svg {
+  transform: scaleX(-1);
+}
+
+/* Hover: slide out */
+.arrowBtn:hover .arrowCircle svg {
+  opacity: 0;
+}
+
+.arrowBtn:hover .arrowCircle:not(.arrowNext) svg {
+  transform: scaleX(-1) translateX(130%);
+}
+
+.arrowBtn:hover .arrowCircle.arrowNext svg {
+  transform: translateX(130%);
+}
+
+/* Ghost arrow via ::after */
+.arrowCircle::after {
+  content: '';
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  background: #fff;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M100,44.896V55.104H94.82449A27.66327,27.66327,0,0,0,68.22692,81.70112v5.104H58.01937v-5.104A37.41244,37.41244,0,0,1,69.95209,55.104H.08V44.896H69.95209A37.41244,37.41244,0,0,1,58.01937,18.29888v-5.104H68.22692v5.104A27.67577,27.67577,0,0,0,94.89644,44.896Z'/%3E%3C/svg%3E");
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M100,44.896V55.104H94.82449A27.66327,27.66327,0,0,0,68.22692,81.70112v5.104H58.01937v-5.104A37.41244,37.41244,0,0,1,69.95209,55.104H.08V44.896H69.95209A37.41244,37.41244,0,0,1,58.01937,18.29888v-5.104H68.22692v5.104A27.67577,27.67577,0,0,0,94.89644,44.896Z'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  opacity: 0;
+  transition: transform 0.6s var(--ease-soft), opacity 0.45s ease;
+}
+
+/* Prev ghost: enters from right (since arrow is flipped) */
+.arrowCircle:not(.arrowNext)::after {
+  transform: scaleX(-1) translateX(-130%);
+}
+
+.arrowBtn:hover .arrowCircle:not(.arrowNext)::after {
+  transform: scaleX(-1) translateX(0);
+  opacity: 1;
+}
+
+/* Next ghost: enters from left */
+.arrowCircle.arrowNext::after {
+  transform: translateX(-130%);
+}
+
+.arrowBtn:hover .arrowCircle.arrowNext::after {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.arrowBtn:hover .arrowCircle {
+  background: var(--brass-soft);
+}

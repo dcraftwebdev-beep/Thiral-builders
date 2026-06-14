@@ -1,0 +1,60 @@
+.cta {
+  background: var(--stone);
+  padding: var(--section-pad) 0;
+  text-align: center;
+  border-top: 2px dotted var(--line);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(36px, 5vw, 72px);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin-top: 16px;
+  color: var(--ink);
+}
+
+.title em {
+  font-style: italic;
+  color: var(--brass);
+}
+
+.sub {
+  margin-top: 24px;
+  font-size: clamp(15px, 1.2vw, 17px);
+  line-height: 1.7;
+  color: var(--ink-soft);
+  max-width: 480px;
+  margin-inline: auto;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 36px;
+  padding: 14px 32px;
+  background: var(--ink);
+  color: var(--stone);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  border-radius: 999px;
+  transition: background 0.3s var(--ease-soft);
+}
+
+.button:hover {
+  background: var(--brass);
+}
+
+.nudge {
+  margin-top: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  opacity: 0.5;
+}

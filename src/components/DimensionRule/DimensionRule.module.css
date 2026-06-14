@@ -1,0 +1,37 @@
+.rule {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+
+.center {
+  justify-content: center;
+}
+
+.tick {
+  width: 1px;
+  height: 12px;
+  background: var(--line);
+  flex: none;
+}
+
+.line {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--brass);
+  white-space: nowrap;
+}
+
+.dark .tick,
+.dark .line {
+  background: var(--line-light);
+}
