@@ -63,9 +63,13 @@ export default function Footer() {
             <span className={styles.colTitle}>Social</span>
 
             <div className={styles.socials}>
-              <a href="#"><FaInstagram /></a>
+              <a href="https://www.instagram.com/thiralbuilders" target="_blank" rel="noopener noreferrer">
+                <FaInstagram />
+              </a>
               {/* <a href="#"><FaBehance /></a> */}
-              <a href="#"><FaLinkedinIn /></a>
+              <a href="https://www.linkedin.com/company/thiralbuilders" target="_blank" rel="noopener noreferrer">
+                <FaLinkedinIn />
+              </a>
             </div>
           </div>
           <div className={styles.infoCol}>
