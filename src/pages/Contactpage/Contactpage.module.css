@@ -208,25 +208,24 @@
   gap: clamp(16px, 2.4vh, 22px);
 }
 
-/* KEY FIX: row must NOT be a stacking context — no isolation, no transform */
+/* row must NOT create a stacking context — no z-index / transform / isolation here */
 .row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: clamp(14px, 1.6vw, 22px);
-  /* do NOT add position, isolation, or overflow here */
 }
 
-/* KEY FIX: field needs position relative + z-index so dropdown floats above siblings */
+/* THE FIX:
+   field stays positioned for the dropdown, but it must NOT carry a z-index.
+   A z-index here turns every field into its own stacking layer — and because
+   the textarea field comes later in the DOM, it paints ON TOP of an open
+   dropdown, hiding it AND swallowing the clicks (so options never select).
+   With z-index:auto the field creates no stacking context, and the dropdown's
+   own z-index floats above the following fields. */
 .field {
   display: flex;
   flex-direction: column;
   position: relative;
-  z-index: 1;
-}
-
-/* When a field contains an open dropdown, raise it above everything */
-.field:focus-within {
-  z-index: 50;
 }
 
 .input {
@@ -265,6 +264,11 @@
   width: 100%;
 }
 
+/* when open, lift the whole select above the following fields */
+.customSelectOpen {
+  z-index: 60;
+}
+
 .customSelectTrigger {
   display: flex;
   align-items: center;
@@ -280,7 +284,6 @@
   color: var(--brass, #C0883C);
 }
 
-/* KEY FIX: high z-index, no overflow:hidden on parents */
 .customSelectDropdown {
   position: absolute;
   top: calc(100% + 8px);
@@ -290,7 +293,7 @@
   border: 1px solid rgba(192, 136, 60, 0.3);
   border-radius: 16px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-  z-index: 999;           /* ← well above textarea, form, everything */
+  z-index: 999;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -313,6 +316,12 @@
 
 .customSelectOption:hover { background: rgba(192, 136, 60, 0.08); }
 
+.customSelectOptionActive {
+  background: rgba(192, 136, 60, 0.12);
+  color: var(--brass, #C0883C);
+  font-weight: 500;
+}
+
 /* checkbox */
 .check {
   display: flex;
@@ -332,6 +341,15 @@
   height: 18px;
   accent-color: var(--brass, #C0883C);
   flex: none;
+}
+
+/* error message */
+.formError {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.4;
+  color: #b4232a;
+  margin: -2px 0 0;
 }
 
 /* submit */
@@ -357,6 +375,13 @@
 .submit:hover {
   filter: brightness(1.05);
   transform: translateY(-1px);
+}
+
+.submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  filter: none;
 }
 
 .submit:focus-visible {

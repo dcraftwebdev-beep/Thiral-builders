@@ -9,8 +9,8 @@ const INFO = [
   {
     key: 'mail',
     title: 'Mail Us 24/7',
-    value: 'hello@thiralbuilders.com',
-    href: 'mailto:hello@thiralbuilders.com',
+    value: 'thiralbuilders@gmail.com',
+    href: 'mailto:thiralbuilders@gmail.com',
     copy: 'We’re always here to answer your questions. Reach us anytime via email.',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -35,8 +35,8 @@ const INFO = [
   {
     key: 'call',
     title: 'Call Us 24/7',
-    value: '+91 44 4000 1234',
-    href: 'tel:+914440001234',
+    value: '+91 96555 73600, +91 96597 55649',
+    href: 'tel:+919655573600',
     copy: 'Our support team is available day and night to assist you by phone.',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -46,7 +46,7 @@ const INFO = [
   },
 ];
 
-const PROJECT_TYPES = ['Architecture', 'Interior Design', 'Renovation', 'Consulting'];
+const PROJECT_TYPES = ['Home Construction', 'Commercial Construction', 'Renovation & Remodeling', 'Consulting'];
 const BUDGETS = ['Under ₹10L', '₹20L – ₹30L', '₹40L – ₹50L', 'Above ₹50L'];
 
 const ArrowIcon = () => (
@@ -71,13 +71,27 @@ const CustomSelect = ({ value, onChange, options, placeholder }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const choose = (opt) => {
+    onChange(opt);
+    setIsOpen(false);
+  };
+
   return (
-    <div className={styles.customSelect} ref={dropdownRef}>
+    <div
+      className={`${styles.customSelect} ${isOpen ? styles.customSelectOpen : ''}`}
+      ref={dropdownRef}
+    >
       <div
         className={`${styles.input} ${styles.customSelectTrigger} ${!value ? styles.placeholder : ''}`}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => setIsOpen((v) => !v)}
         role="button"
         tabIndex={0}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setIsOpen((v) => !v); }
+          if (e.key === 'Escape') setIsOpen(false);
+        }}
       >
         <span>{value || placeholder}</span>
         <span
@@ -90,15 +104,16 @@ const CustomSelect = ({ value, onChange, options, placeholder }) => {
         </span>
       </div>
       {isOpen && (
-        <div className={styles.customSelectDropdown}>
+        <div className={styles.customSelectDropdown} role="listbox">
           {options.map((opt) => (
             <div
               key={opt}
-              className={styles.customSelectOption}
-              onClick={() => {
-                onChange(opt);
-                setIsOpen(false);
-              }}
+              className={`${styles.customSelectOption} ${opt === value ? styles.customSelectOptionActive : ''}`}
+              role="option"
+              aria-selected={opt === value}
+              // prevent the trigger from blurring before the click registers
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => choose(opt)}
             >
               {opt}
             </div>
@@ -120,6 +135,8 @@ export default function ContactPage() {
     save: false,
   });
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState('');
 
   const set = (key) => (e) =>
     setForm((f) => ({ ...f, [key]: e.target.value }));
@@ -128,10 +145,51 @@ export default function ContactPage() {
   const setDropdown = (key) => (val) =>
     setForm((f) => ({ ...f, [key]: val }));
 
-  const handleSubmit = (e) => {
+  // Restore saved name/email if the visitor opted in before
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('thiral_contact') || 'null');
+      if (saved && (saved.name || saved.email)) {
+        setForm((f) => ({ ...f, name: saved.name || '', email: saved.email || '', save: true }));
+      }
+    } catch { /* ignore */ }
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Contact form submission:', form);
-    setSent(true);
+    setError('');
+
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
+      setError('Please fill in your name, email and message.');
+      return;
+    }
+
+    setSending(true);
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || 'Something went wrong. Please try again.');
+      }
+
+      // remember-me
+      if (form.save) {
+        localStorage.setItem('thiral_contact', JSON.stringify({ name: form.name, email: form.email }));
+      } else {
+        localStorage.removeItem('thiral_contact');
+      }
+
+      setSent(true);
+    } catch (err) {
+      setError(err.message || 'Could not send your message. Please try again.');
+    } finally {
+      setSending(false);
+    }
   };
 
   useEffect(() => {
@@ -316,11 +374,13 @@ export default function ContactPage() {
                   <span>Save my name and email in this browser for the next time I comment.</span>
                 </label>
 
-                <button type="submit" className={styles.submit}>
+                {error && <p className={styles.formError}>{error}</p>}
+
+                <button type="submit" className={styles.submit} disabled={sending}>
                   <span className={styles.submitArrow}>
                     <ArrowIcon />
                   </span>
-                  Submit Query
+                  {sending ? 'Sending…' : 'Submit Query'}
                 </button>
               </form>
             )}

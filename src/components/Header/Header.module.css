@@ -134,6 +134,163 @@
 .cta { z-index: 110; }
 
 /* ===================================================================
+ * SERVICES DROPDOWN (desktop)
+ * =================================================================== */
+.navDrop {
+  position: relative;
+  display: inline-flex;
+}
+
+.navDropTrigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.navCaret {
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.4s var(--ease-soft), color 0.3s var(--ease-soft);
+}
+
+.navCaret svg {
+  width: 9px;
+  height: 6px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.navDrop:hover .navCaret {
+  transform: rotate(180deg);
+  color: var(--brass);
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 16px);
+  left: -22px;
+  width: 360px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid rgba(24, 23, 20, 0.07);
+  border-radius: 18px;
+  box-shadow: 0 26px 64px rgba(24, 23, 20, 0.16);
+  padding: 12px;
+  z-index: 120;
+  transform-origin: top left;
+}
+
+/* invisible bridge so the gap between trigger and panel keeps hover alive */
+.dropdown::before {
+  content: '';
+  position: absolute;
+  top: -18px;
+  left: 0;
+  right: 0;
+  height: 18px;
+}
+
+.dropTopline {
+  display: block;
+  height: 2px;
+  width: 38px;
+  background: var(--brass);
+  border-radius: 2px;
+  margin: 2px 0 8px 14px;
+}
+
+.dropList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dropLink {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: background 0.35s var(--ease-soft);
+}
+
+.dropLink::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 50%;
+  width: 2px;
+  height: 58%;
+  background: var(--brass);
+  border-radius: 2px;
+  transform: translateY(-50%) scaleY(0);
+  transform-origin: center;
+  transition: transform 0.35s var(--ease-soft);
+}
+
+.dropLink:hover {
+  background: rgba(154, 123, 79, 0.08);
+}
+
+.dropLink:hover::before {
+  transform: translateY(-50%) scaleY(1);
+}
+
+.dropCode {
+  flex-shrink: 0;
+  width: 22px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--brass);
+}
+
+.dropText {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.dropName {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.dropBlurb {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  opacity: 0.7;
+}
+
+.dropArrow {
+  flex-shrink: 0;
+  font-size: 15px;
+  color: var(--brass);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.3s ease, transform 0.35s var(--ease-soft);
+}
+
+.dropLink:hover .dropArrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ===================================================================
  * SCROLL PROGRESS
  * =================================================================== */
 .progress {
@@ -206,6 +363,8 @@
   border-bottom-left-radius: 24px;
   border-bottom-right-radius: 24px;
   will-change: clip-path;
+  max-height: 100vh;
+  overflow-y: auto;
 }
 
 .overlayNav {
@@ -213,6 +372,11 @@
   flex-direction: column;
   gap: 0;
   border-top: 1px solid var(--line);
+}
+
+.overlayGroup {
+  display: flex;
+  flex-direction: column;
 }
 
 .overlayItem {
@@ -270,6 +434,39 @@
   transform: translateX(0);
 }
 
+/* ---- Nested service links (mobile) ---- */
+.overlaySub {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 0 16px 30px;
+  border-bottom: 1px solid var(--line);
+}
+
+.overlaySubLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  padding: 8px 0;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: -0.005em;
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color 0.3s var(--ease-soft);
+}
+
+.overlaySubLink:hover,
+.overlaySubLink:active { color: var(--brass); }
+
+.overlaySubCode {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--brass);
+}
+
 .overlayFoot {
   margin-top: 28px;
   display: flex;
@@ -309,5 +506,7 @@
   .navFlipLine,
   .overlayLink,
   .logoMark,
+  .navCaret,
+  .dropArrow,
   .burger span { transition: none; }
 }

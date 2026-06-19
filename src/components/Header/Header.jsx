@@ -9,9 +9,16 @@ import {
 import styles from './Header.module.css';
 import logo from '../../assests/thirallogo.png';
 
+/* Service dropdown targets — these IDs must match the sections in ServicePage */
+const SERVICE_LINKS = [
+  { to: '/services#home-construction',       label: 'Home Construction',        code: '01', blurb: 'Ground-up residential builds' },
+  { to: '/services#commercial-construction', label: 'Commercial Construction',  code: '02', blurb: 'Retail, office & mixed-use' },
+  { to: '/services#renovation-remodeling',   label: 'Renovation & Remodeling',  code: '03', blurb: 'Restore, extend, reimagine' },
+];
+
 const NAV = [
   { to: '/properties', label: 'Properties', hash: false },
-  { to: '/services',   label: 'Services',   hash: true  },
+  { to: '/services',   label: 'Services',   hash: true,  children: SERVICE_LINKS },
   { to: '/about',      label: 'About',      hash: true  },
   { to: '/blogs',      label: 'Blogs',      hash: true  },
   { to: '/contact',    label: 'Contact',    hash: true  },
@@ -36,9 +43,10 @@ const lineVariants = {
 };
 
 export default function Header() {
-  const [scrolled, setScrolled] = useState(false);
-  const [hidden,   setHidden]   = useState(false);
-  const [open,     setOpen]     = useState(false);
+  const [scrolled,     setScrolled]     = useState(false);
+  const [hidden,       setHidden]       = useState(false);
+  const [open,         setOpen]         = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
   const lastY = useRef(0);
 
   const { scrollYProgress } = useScroll();
@@ -67,6 +75,26 @@ export default function Header() {
     return () => { document.body.style.overflow = ''; };
   }, [open]);
 
+  /* Smooth-scroll to a service section when already on /services,
+     otherwise let the browser navigate (ServicePage scrolls on mount). */
+  const goToService = (e, to) => {
+    const id = to.split('#')[1];
+    setOpen(false);
+    setServicesOpen(false);
+    if (id && window.location.pathname === '/services') {
+      e.preventDefault();
+      const el = document.getElementById(id);
+      if (el) {
+        if (window.lenis?.scrollTo) {
+          window.lenis.scrollTo(el, { offset: -90, duration: 1.2 });
+        } else {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        window.history.replaceState(null, '', to);
+      }
+    }
+  };
+
   return (
     <>
       <motion.header
@@ -92,6 +120,74 @@ export default function Header() {
                   <span className={styles.navFlipLine} aria-hidden="true">{item.label}</span>
                 </span>
               );
+
+              /* ---- Item with dropdown (Services) ---- */
+              if (item.children) {
+                return (
+                  <div
+                    key={item.label}
+                    className={styles.navDrop}
+                    onMouseEnter={() => setServicesOpen(true)}
+                    onMouseLeave={() => setServicesOpen(false)}
+                  >
+                    <a
+                      href={item.to}
+                      className={`${styles.navLink} ${styles.navDropTrigger}`}
+                      aria-haspopup="true"
+                      aria-expanded={servicesOpen}
+                    >
+                      {Inner}
+                      <span className={styles.navCaret} aria-hidden="true">
+                        <svg viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" /></svg>
+                      </span>
+                    </a>
+
+                    <AnimatePresence>
+                      {servicesOpen && (
+                        <motion.div
+                          className={styles.dropdown}
+                          initial={{ opacity: 0, y: 12, scale: 0.98 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                          transition={{ duration: 0.32, ease: EASE }}
+                        >
+                          <span className={styles.dropTopline} aria-hidden="true" />
+                          <ul className={styles.dropList}>
+                            {item.children.map((c, i) => (
+                              <motion.li
+                                key={c.label}
+                                className={styles.dropItem}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.06 + i * 0.06, duration: 0.4, ease: EASE }}
+                              >
+                                <a
+                                  href={c.to}
+                                  className={styles.dropLink}
+                                  onClick={(e) => goToService(e, c.to)}
+                                >
+                                  <span className={styles.dropCode}>{c.code}</span>
+                                  <span className={styles.dropText}>
+                                    <span className={styles.dropName}>{c.label}</span>
+                                    <span className={styles.dropBlurb}>{c.blurb}</span>
+                                  </span>
+                                  <span className={styles.dropArrow} aria-hidden="true"> <span className="thiral-btn-arrow" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                <path d="M100,44.896V55.104H94.82449A27.66327,27.66327,0,0,0,68.22692,81.70112v5.104H58.01937v-5.104A37.41244,37.41244,0,0,1,69.95209,55.104H.08V44.896H69.95209A37.41244,37.41244,0,0,1,58.01937,18.29888v-5.104H68.22692v5.104A27.67577,27.67577,0,0,0,94.89644,44.896Z" />
+              </svg>
+            </span></span>
+                                </a>
+                              </motion.li>
+                            ))}
+                          </ul>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              }
+
+              /* ---- Plain items ---- */
               return item.hash ? (
                 <a key={item.label} href={item.to} className={styles.navLink}>{Inner}</a>
               ) : (
@@ -156,23 +252,42 @@ export default function Header() {
               aria-label="Mobile"
             >
               {NAV.map((item, i) => (
-                <div className={styles.overlayItem} key={item.label}>
-                  <span className={styles.overlayIndex}>
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <span className={styles.overlayMask}>
-                    <motion.span className={styles.overlayLine} variants={lineVariants}>
-                      {item.hash ? (
-                        <a href={item.to} className={styles.overlayLink} onClick={() => setOpen(false)}>
-                          {item.label}
+                <div className={styles.overlayGroup} key={item.label}>
+                  <div className={styles.overlayItem}>
+                    <span className={styles.overlayIndex}>
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span className={styles.overlayMask}>
+                      <motion.span className={styles.overlayLine} variants={lineVariants}>
+                        {item.hash ? (
+                          <a href={item.to} className={styles.overlayLink} onClick={() => setOpen(false)}>
+                            {item.label}
+                          </a>
+                        ) : (
+                          <Link to={item.to} className={styles.overlayLink} onClick={() => setOpen(false)}>
+                            {item.label}
+                          </Link>
+                        )}
+                      </motion.span>
+                    </span>
+                  </div>
+
+                  {/* Nested service links (mobile) */}
+                  {item.children && (
+                    <div className={styles.overlaySub}>
+                      {item.children.map((c) => (
+                        <a
+                          key={c.label}
+                          href={c.to}
+                          className={styles.overlaySubLink}
+                          onClick={(e) => goToService(e, c.to)}
+                        >
+                          <span className={styles.overlaySubCode}>{c.code}</span>
+                          {c.label}
                         </a>
-                      ) : (
-                        <Link to={item.to} className={styles.overlayLink} onClick={() => setOpen(false)}>
-                          {item.label}
-                        </Link>
-                      )}
-                    </motion.span>
-                  </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </motion.nav>

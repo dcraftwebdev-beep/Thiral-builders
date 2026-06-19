@@ -47,6 +47,40 @@ const SERVICES = [
   },
 ];
 
+/* Detailed service sections — IDs are the targets of the header dropdown */
+const DETAIL_SERVICES = [
+  {
+    id: 'home-construction',
+    num: '01',
+    name: 'Home Construction',
+    copy:
+      'From foundation to handover, we build homes the way they should be built — properly. Site assessment, structural engineering, finishing and fit-out run as one accountable process, so what you sign off on paper is exactly what you walk into on completion day.',
+    points: ['Turnkey builds', 'Structural engineering', 'Project management', 'Quality assurance'],
+    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80',
+    alt: 'Modern residential home exterior',
+  },
+  {
+    id: 'commercial-construction',
+    num: '02',
+    name: 'Commercial Construction',
+    copy:
+      'Retail floors, office cores and mixed-use blocks demand schedules that hold and budgets that don’t drift. We bring contractor-grade delivery and a single point of accountability to every commercial brief — built to code, built to open on time.',
+    points: ['Fit-outs', 'RCC & structure', 'MEP coordination', 'Statutory compliance'],
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80',
+    alt: 'Glass commercial office towers',
+  },
+  {
+    id: 'renovation-remodeling',
+    num: '03',
+    name: 'Renovation & Remodeling',
+    copy:
+      'Some buildings are worth keeping. We survey what stands, protect what works and rebuild only where it earns its place — modernising layouts, services and finishes without losing the character that made the place worth saving in the first place.',
+    points: ['Structural retrofits', 'Layout reconfiguration', 'Heritage care', 'Phased works'],
+    image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1600&q=80',
+    alt: 'Building undergoing renovation with scaffolding',
+  },
+];
+
 const ArrowIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" aria-hidden="true">
     <path d="M100,44.896V55.104H94.82449A27.66327,27.66327,0,0,0,68.22692,81.70112v5.104H58.01937v-5.104A37.41244,37.41244,0,0,1,69.95209,55.104H.08V44.896H69.95209A37.41244,37.41244,0,0,1,58.01937,18.29888v-5.104H68.22692v5.104A27.67577,27.67577,0,0,0,94.89644,44.896Z" />
@@ -220,7 +254,100 @@ export default function ServicePage() {
       return () => ctx.revert();
     });
 
+    /* ---------- Detailed service sections (all widths) ---------- */
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      const ctx = gsap.context(() => {
+        gsap.utils.toArray(`.${styles.detailSection}`).forEach((sec) => {
+          const fig = sec.querySelector(`.${styles.detailFigure}`);
+          const img = sec.querySelector(`.${styles.detailImg}`);
+          const num = sec.querySelector(`.${styles.detailNum}`);
+          const line = sec.querySelector(`.${styles.detailLine}`);
+          const bits = sec.querySelectorAll(`.${styles.dAnim}`);
+
+          // figure wipes up into view
+          gsap.fromTo(
+            fig,
+            { clipPath: 'inset(0% 0% 100% 0%)' },
+            {
+              clipPath: 'inset(0% 0% 0% 0%)',
+              duration: 1.2,
+              ease: 'power4.out',
+              scrollTrigger: { trigger: sec, start: 'top 78%' },
+            }
+          );
+
+          // slow image scale-down
+          gsap.fromTo(
+            img,
+            { scale: 1.25 },
+            {
+              scale: 1,
+              ease: 'none',
+              scrollTrigger: { trigger: sec, start: 'top bottom', end: 'bottom top', scrub: true },
+            }
+          );
+
+          // watermark number parallax
+          if (num) {
+            gsap.fromTo(
+              num,
+              { yPercent: 24 },
+              {
+                yPercent: -24,
+                ease: 'none',
+                scrollTrigger: { trigger: sec, start: 'top bottom', end: 'bottom top', scrub: true },
+              }
+            );
+          }
+
+          // title line rises out of its mask
+          if (line) {
+            gsap.from(line, {
+              yPercent: 115,
+              duration: 1,
+              ease: 'power4.out',
+              scrollTrigger: { trigger: sec, start: 'top 74%' },
+            });
+          }
+
+          // eyebrow / copy / pills stagger
+          gsap.from(bits, {
+            y: 42,
+            autoAlpha: 0,
+            stagger: 0.09,
+            duration: 0.85,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: sec, start: 'top 70%' },
+          });
+        });
+      }, pageRef);
+      return () => ctx.revert();
+    });
+
     return () => mm.revert();
+  }, []);
+
+  /* ---------- Scroll to #section when arriving from the header dropdown ---------- */
+  useEffect(() => {
+    const id = window.location.hash.replace('#', '');
+    if (!id) return;
+    let raf;
+    const t = setTimeout(() => {
+      ScrollTrigger.refresh();
+      raf = requestAnimationFrame(() => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (window.lenis?.scrollTo) {
+          window.lenis.scrollTo(el, { offset: -90, duration: 1.2 });
+        } else {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    }, 650);
+    return () => {
+      clearTimeout(t);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
 
   return (
@@ -292,6 +419,42 @@ export default function ServicePage() {
           </div>
         </div>
       </section>
+
+      {/* ---------- Detailed service sections (header-dropdown targets) ---------- */}
+      <div className={styles.detail}>
+        {DETAIL_SERVICES.map((s, i) => (
+          <section
+            className={styles.detailSection}
+            id={s.id}
+            key={s.id}
+            data-flip={i % 2 === 1 ? 'true' : 'false'}
+          >
+            <div className={styles.detailInner}>
+              <figure className={styles.detailFigure}>
+                <img className={styles.detailImg} src={s.image} alt={s.alt} loading="lazy" />
+              </figure>
+
+              <div className={styles.detailBody}>
+                <span className={styles.detailNum} aria-hidden="true">{s.num}</span>
+                <span className={`${styles.detailEyebrow} ${styles.dAnim}`}>
+                  {s.num} — Service
+                </span>
+                <h2 className={styles.detailTitle}>
+                  <span className={styles.detailLineMask}>
+                    <span className={styles.detailLine}>{s.name}</span>
+                  </span>
+                </h2>
+                <p className={`${styles.detailCopy} ${styles.dAnim}`}>{s.copy}</p>
+                <ul className={`${styles.detailList} ${styles.dAnim}`}>
+                  {s.points.map((p) => (
+                    <li className={styles.detailPoint} key={p}>{p}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </section>
+        ))}
+      </div>
 
       {/* ---------- CTA ---------- */}
       <section className={styles.cta}>
