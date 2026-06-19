@@ -1,17 +1,18 @@
 // api/contact.js
 // Vercel serverless function — sends the contact form via Resend.
-// Vite-on-Vercel auto-detects the /api folder; no extra config needed.
+// Sends ONE email containing exactly what the visitor entered, to CONTACT_TO.
 //
 // Setup:
 //   npm i resend
 //   Vercel → Project → Settings → Environment Variables:
-//     RESEND_API_KEY   re_xxxxxxxx              (required)
-//     CONTACT_TO       hello@thiralbuilders.com (where leads land)
-//     CONTACT_FROM     Thiral Builders <enquiries@thiralbuilders.com>
-//   The FROM domain must be verified in Resend (Domains → Add).
-//   For quick testing you can use:  CONTACT_FROM = onboarding@resend.dev
-//   (that test sender only delivers to your own Resend account email).
-
+//     RESEND_API_KEY   re_xxxxxxxx
+//     CONTACT_TO       the inbox where you want enquiries to land
+//     CONTACT_FROM     Thiral Builders <enquiries@yourdomain.com>
+//
+//   IMPORTANT: with the test sender onboarding@resend.dev, Resend will ONLY
+//   deliver to your own Resend account email. So set CONTACT_TO to that email
+//   for now. To send to any address, verify your domain (Resend → Domains)
+//   and set CONTACT_FROM to an address on that domain.
 
 import { Resend } from 'resend';
 
@@ -51,7 +52,7 @@ function shell(inner) {
           ${inner}
           <tr>
             <td style="padding:20px 32px;border-top:1px solid rgba(24,23,20,.08);font:400 12px/1.6 'Helvetica Neue',Arial,sans-serif;color:rgba(24,23,20,.5);">
-              Thiral Builders &amp; Developers · 4th Floor, Marina Towers, Chennai · +91 44 4000 1234
+              Thiral Builders &amp; Developers · 4th Floor, Marina Towers, Chennai
             </td>
           </tr>
         </table>
@@ -69,8 +70,8 @@ function row(label, value) {
   </tr>`;
 }
 
-/* ---------- team notification ---------- */
-function teamEmail({ name, email, type, budget, message }) {
+/* ---------- enquiry email (the only one we send) ---------- */
+function enquiryEmail({ name, email, type, budget, message }) {
   const inner = `
     <tr><td style="padding:32px 32px 8px;">
       <p style="margin:0 0 4px;font:600 11px/1 'Helvetica Neue',Arial,sans-serif;letter-spacing:2px;text-transform:uppercase;color:${BRASS};">New enquiry</p>
@@ -91,23 +92,7 @@ function teamEmail({ name, email, type, budget, message }) {
   return shell(inner);
 }
 
-/* ---------- auto-reply to the visitor ---------- */
-function autoReply({ name }) {
-  const inner = `
-    <tr><td style="padding:32px;">
-      <h1 style="margin:0 0 14px;font:400 28px/1.2 Georgia,serif;color:${INK};">Thank you, ${esc(name)}.</h1>
-      <p style="margin:0 0 14px;font:400 15px/1.7 'Helvetica Neue',Arial,sans-serif;color:rgba(24,23,20,.75);">
-        We’ve received your enquiry and a member of our team will be in touch within two working days — usually sooner.
-      </p>
-      <p style="margin:0 0 22px;font:400 15px/1.7 'Helvetica Neue',Arial,sans-serif;color:rgba(24,23,20,.75);">
-        If it’s urgent, call us any time on <a href="tel:+914440001234" style="color:${BRASS};text-decoration:none;">+91 44 4000 1234</a>.
-      </p>
-      <p style="margin:0;font:400 15px/1.7 'Helvetica Neue',Arial,sans-serif;color:${INK};">— The Thiral Builders team</p>
-    </td></tr>`;
-  return shell(inner);
-}
-
-function teamText({ name, email, type, budget, message }) {
+function enquiryText({ name, email, type, budget, message }) {
   return `New enquiry from ${name}
 Email: ${email}
 Project type: ${type || '—'}
@@ -143,36 +128,24 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Please enter a valid email address.' });
     }
 
-    // 1) notify the team
+    // Send only the enquiry email (with the entered data) to your inbox.
     const { data, error } = await resend.emails.send({
       from: FROM,
       to: [TO],
       replyTo: [email],
       subject: `New enquiry — ${name}${type ? ' · ' + type : ''}`,
-      html: teamEmail({ name, email, type, budget, message }),
-      text: teamText({ name, email, type, budget, message }),
+      html: enquiryEmail({ name, email, type, budget, message }),
+      text: enquiryText({ name, email, type, budget, message }),
     });
 
     if (error) {
+      console.error('Resend error:', error);
       return res.status(502).json({ error: error.message || 'Could not send your message.' });
     }
 
-    // 2) auto-acknowledge the visitor (non-blocking — ignore its failure)
-    try {
-      await resend.emails.send({
-        from: FROM,
-        to: [email],
-        subject: 'We’ve received your enquiry — Thiral Builders',
-        html: autoReply({ name }),
-        text: `Thank you, ${name}. We’ve received your enquiry and will be in touch within two working days. — The Thiral Builders team`,
-      });
-    } catch (_) { /* don't fail the request if the auto-reply bounces */ }
-
     return res.status(200).json({ ok: true, id: data?.id });
   } catch (err) {
-  console.error('Contact form error:', err);
-  return res.status(500).json({
-    error: err?.message || 'Server error. Please try again.'
-  });
-}
+    console.error('Contact form error:', err);
+    return res.status(500).json({ error: err?.message || 'Server error. Please try again.' });
+  }
 }
