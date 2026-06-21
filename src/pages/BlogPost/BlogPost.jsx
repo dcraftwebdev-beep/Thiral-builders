@@ -218,7 +218,7 @@ export default function BlogPost() {
                 <p className={styles.ctaText}>
                   Let&rsquo;s talk about shaping your next space.
                 </p>
-                <Link to="/#contact" className={styles.ctaBtn}>
+                <Link to="https://wa.me/919655573600" className={styles.ctaBtn} target="_blank" rel="noopener noreferrer">
                   Start a conversation <span aria-hidden="true">→</span>
                 </Link>
               </div>

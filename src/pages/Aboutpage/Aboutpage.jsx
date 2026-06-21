@@ -1,6 +1,8 @@
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Link, NavLink } from 'react-router-dom';
+
 // Adjust these paths to match where AboutPage.jsx lives in your tree
 import Reveal from '../../components/Reveal/Reveal.jsx';
 import DimensionRule from '../../components/DimensionRule/DimensionRule.jsx';
@@ -369,10 +371,10 @@ export default function AboutPage() {
           <Reveal>
             <h2 className={styles.ctaTitle}>Build the next chapter with us</h2>
           </Reveal>
-          <a href="/contact" className={styles.ctaBtn}>
+          <Link to="https://wa.me/919655573600" className={styles.ctaBtn}>
             <span className={styles.ctaArrow}><ArrowIcon /></span>
             Start a conversation
-          </a>
+          </Link>
         </div>
       </section>
     </main>

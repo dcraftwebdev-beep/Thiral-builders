@@ -201,6 +201,7 @@ export default function ContactPage() {
           autoAlpha: 0,
           duration: 1,
           ease: 'power3.out',
+          clearProps: 'transform',
         });
         gsap.from(`.${styles.infoCard}`, {
           y: 36,
@@ -208,6 +209,7 @@ export default function ContactPage() {
           duration: 0.8,
           stagger: 0.12,
           ease: 'power3.out',
+          clearProps: 'transform',
           scrollTrigger: { trigger: `.${styles.infoStrip}`, start: 'top 82%' },
         });
         gsap.from(`.${styles.formImage}`, {
@@ -215,14 +217,19 @@ export default function ContactPage() {
           autoAlpha: 0,
           duration: 1,
           ease: 'power3.out',
+          clearProps: 'transform',
           scrollTrigger: { trigger: `.${styles.contactBody}`, start: 'top 70%' },
         });
+        // IMPORTANT: clearProps wipes the leftover inline transform GSAP leaves
+        // behind. Without it, each field keeps a transform, which makes it its
+        // own stacking layer and hides the open dropdown behind later fields.
         gsap.from(`.${styles.field}`, {
           y: 24,
           autoAlpha: 0,
           duration: 0.7,
           stagger: 0.07,
           ease: 'power3.out',
+          clearProps: 'all',
           scrollTrigger: { trigger: `.${styles.form}`, start: 'top 80%' },
         });
       }, pageRef);

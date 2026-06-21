@@ -1,5 +1,6 @@
 import Reveal from '../../../../components/Reveal/Reveal.jsx';
 import styles from './CTA.module.css';
+import { Link, NavLink } from 'react-router-dom';
 
 export default function CTA() {
   return (
@@ -14,9 +15,9 @@ export default function CTA() {
             Whether you're buying your first home, building from the ground up,
             or renovating what you already love — we've done it, and we'll do it right.
           </p>
-          <a href="#contact" className={styles.button}>
+          <Link to="https://wa.me/919655573600?text=Hi%20I%20am%20interested%20in%20your%20services" className={styles.button}>
             <span>Talk to us today</span>
-          </a>
+          </Link>
           <p className={styles.nudge}>Free site visit &nbsp;·&nbsp; No brokerage &nbsp;·&nbsp; Reply within 24 hrs</p>
         </Reveal>
       </div>

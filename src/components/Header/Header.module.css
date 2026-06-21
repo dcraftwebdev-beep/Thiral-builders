@@ -127,6 +127,10 @@
   transition: transform 0.4s var(--ease-soft);
 }
 
+.navActive {
+  color: var(--brass);
+}
+
 .navActive::after {
   transform: translate(-50%, 0) scale(1);
 }
@@ -430,6 +434,16 @@
 }
 
 .overlayLink:hover::after {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ---- Active state (current route) on mobile menu rows ---- */
+.overlayActive {
+  color: var(--brass);
+}
+
+.overlayActive::after {
   opacity: 1;
   transform: translateX(0);
 }

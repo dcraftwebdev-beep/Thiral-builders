@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import DimensionRule from '../DimensionRule/DimensionRule.jsx';
 import styles from './Footer.module.css';
 import logo from '../../assests/thirallogov2.png';
-import { FaInstagram, FaBehance, FaLinkedinIn } from "react-icons/fa";
+import { FaInstagram, FaBehance, FaLinkedinIn, FaWhatsapp, FaEnvelope, } from "react-icons/fa";
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
@@ -17,7 +17,7 @@ export default function Footer() {
             {/* <span className={styles.logoText}>Thiral</span> */}
           </Link>
           <p className={styles.tagline}>
-            Lumoria is dedicated to transforming visions into<br />
+            Thiral is dedicated to transforming visions into<br />
             timeless spaces through innovative architecture and<br />
             thoughtful design.
           </p>
@@ -27,7 +27,7 @@ export default function Footer() {
           </Link> */}
           <div className={styles.ctaWrapper}>
             <Link
-              to="mailto:hello@thiral.studio"
+              to="https://wa.me/919655573600?text=Hi%20I%20am%20interested%20in%20your%20services"
               className="thiral-btn"
             // onClick={() => setOpen(false)}
             >
@@ -66,10 +66,24 @@ export default function Footer() {
               <a href="https://www.instagram.com/thiralbuilders" target="_blank" rel="noopener noreferrer">
                 <FaInstagram />
               </a>
-              {/* <a href="#"><FaBehance /></a> */}
-              <a href="https://www.linkedin.com/company/thiralbuilders" target="_blank" rel="noopener noreferrer">
-                <FaLinkedinIn />
+              <a
+                href="https://wa.me/919655573600"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp"
+              >
+                <FaWhatsapp />
               </a>
+              <a
+                href="mailto:thiralbuilders@gmail.com"
+                aria-label="Email"
+              >
+                <FaEnvelope />
+              </a>
+              {/* <a href="#"><FaBehance /></a> */}
+              {/* <a href="https://www.linkedin.com/company/thiralbuilders" target="_blank" rel="noopener noreferrer">
+                <FaLinkedinIn />
+              </a> */}
             </div>
           </div>
           <div className={styles.infoCol}>

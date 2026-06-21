@@ -227,24 +227,31 @@ export default function Properties() {
           duration: 0.5,
           ease: 'power3.out',
         });
+        // Single persistent setter for timeScale instead of spawning a new
+        // gsap.to() on every scroll tick — prevents queued/competing tweens
+        // (the old "snap up" + "decay to 1" pair) from piling up and making
+        // the marquee shake/jitter on fast or jerky scrolls.
+        const timeScaleSetter = gsap.quickTo(loop, 'timeScale', {
+          duration: 0.4,
+          ease: 'power3.out',
+        });
         const clampSkew = gsap.utils.clamp(-6, 6);
         const clampSpeed = gsap.utils.clamp(0.6, 4);
+        let decayTimeout;
 
         ScrollTrigger.create({
           onUpdate: (self) => {
             const v = self.getVelocity();
             skewSetter(clampSkew(v / -350));
-            gsap.to(loop, {
-              timeScale: clampSpeed(1 + Math.abs(v) / 1200),
-              duration: 0.4,
-              overwrite: true,
-            });
-            gsap.to(loop, {
-              timeScale: 1,
-              duration: 1,
-              delay: 0.4,
-              overwrite: false,
-            });
+            timeScaleSetter(clampSpeed(1 + Math.abs(v) / 1200));
+
+            // Ease speed back to normal once scrolling settles, without
+            // stacking extra tweens — just re-arm a single timeout that
+            // nudges the same quickTo setter back to 1.
+            clearTimeout(decayTimeout);
+            decayTimeout = setTimeout(() => {
+              timeScaleSetter(1);
+            }, 400);
           },
         });
 
@@ -267,6 +274,31 @@ export default function Properties() {
             }
           );
         });
+
+        // ---------- Refresh ScrollTrigger once late-loading images settle ----------
+        // The hero's pin distance is derived from text.scrollWidth, and the
+        // background is a large full-bleed photo. If any of these images
+        // finish loading (and shift layout/width) after ScrollTrigger has
+        // already measured the page, the pinned section's start/end can
+        // recalculate mid-scroll — which feels like a sudden jump/shake.
+        // Forcing one refresh once every image is loaded keeps measurements
+        // accurate without recalculating repeatedly during the scroll itself.
+        const imgs = wrapper.querySelectorAll('img');
+        let pending = imgs.length;
+        if (pending > 0) {
+          const onImgSettled = () => {
+            pending -= 1;
+            if (pending === 0) ScrollTrigger.refresh();
+          };
+          imgs.forEach((img) => {
+            if (img.complete) {
+              onImgSettled();
+            } else {
+              img.addEventListener('load', onImgSettled, { once: true });
+              img.addEventListener('error', onImgSettled, { once: true });
+            }
+          });
+        }
       }, pageRef);
 
       return () => {

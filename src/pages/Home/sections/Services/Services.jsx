@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Reveal from '../../../../components/Reveal/Reveal.jsx';
 import DimensionRule from '../../../../components/DimensionRule/DimensionRule.jsx';
+import { Link, NavLink } from 'react-router-dom';
 import styles from './Services.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -119,14 +120,14 @@ export default function Services() {
                 </div>
                 <h3 className={styles.name}>{s.name}</h3>
                 <p className={styles.copy}>{s.copy}</p>
-                <button className={styles.cardBtn}>
+                <Link  to="/services" className={styles.cardBtn}>
                   <span className={styles.cardArrow} aria-hidden="true">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                       <path d="M100,44.896V55.104H94.82449A27.66327,27.66327,0,0,0,68.22692,81.70112v5.104H58.01937v-5.104A37.41244,37.41244,0,0,1,69.95209,55.104H.08V44.896H69.95209A37.41244,37.41244,0,0,1,58.01937,18.29888v-5.104H68.22692v5.104A27.67577,27.67577,0,0,0,94.89644,44.896Z" />
                     </svg>
                   </span>
                   {s.cta}
-                </button>
+                </Link>
               </div>
               <div className={styles.cardImage}>
                 <img src={s.image} alt={s.alt} loading="lazy" />
