@@ -124,16 +124,18 @@ const CustomSelect = ({ value, onChange, options, placeholder }) => {
   );
 };
 
+const EMPTY_FORM = {
+  name: '',
+  email: '',
+  type: '',
+  budget: '',
+  message: '',
+  save: false,
+};
+
 export default function ContactPage() {
   const pageRef = useRef(null);
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    type: '',
-    budget: '',
-    message: '',
-    save: false,
-  });
+  const [form, setForm] = useState(EMPTY_FORM);
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
@@ -184,6 +186,15 @@ export default function ContactPage() {
         localStorage.removeItem('thiral_contact');
       }
 
+      // Keep the form visible — just clear the fields (except the saved
+      // name/email if "remember me" is checked) and show the thank-you
+      // note above it instead of replacing the form.
+      setForm((f) => ({
+        ...EMPTY_FORM,
+        name: f.save ? f.name : '',
+        email: f.save ? f.email : '',
+        save: f.save,
+      }));
       setSent(true);
     } catch (err) {
       setError(err.message || 'Could not send your message. Please try again.');
@@ -302,95 +313,90 @@ export default function ContactPage() {
             <span className={styles.eyebrow}>Contact Form</span>
             <h2 className={styles.bodyTitle}>Ask Us Anything!</h2>
 
-            {sent ? (
-              <div className={styles.thanks}>
-                <h3 className={styles.thanksTitle}>Thank you.</h3>
-                <p className={styles.thanksCopy}>
-                  Your query is in — we&rsquo;ll be in touch within two working
-                  days, usually sooner.
+            {/* Thank-you note appears above the form once sent — the form
+                itself stays mounted and visible, just cleared, so the
+                visitor can immediately send another enquiry if they want. */}
+            {sent && (
+              <div className={styles.thanksInline} role="status">
+                <p className={styles.thanksInlineTitle}>Thank you — your message is in.</p>
+                <p className={styles.thanksInlineCopy}>
+                  We&rsquo;ll be in touch within two working days, usually sooner.
                 </p>
-                <button
-                  type="button"
-                  className={styles.textBtn}
-                  onClick={() => setSent(false)}
-                >
-                  Send another
-                </button>
               </div>
-            ) : (
-              <form className={styles.form} onSubmit={handleSubmit} noValidate>
-                <div className={styles.row}>
-                  <div className={styles.field}>
-                    <input
-                      className={styles.input}
-                      type="text"
-                      value={form.name}
-                      onChange={set('name')}
-                      placeholder="Name *"
-                      required
-                    />
-                  </div>
-                  <div className={styles.field}>
-                    <input
-                      className={styles.input}
-                      type="email"
-                      value={form.email}
-                      onChange={set('email')}
-                      placeholder="Email Id *"
-                      required
-                    />
-                  </div>
-                </div>
+            )}
 
-                <div className={styles.row}>
-                  <div className={styles.field}>
-                    <CustomSelect
-                      value={form.type}
-                      onChange={setDropdown('type')}
-                      options={PROJECT_TYPES}
-                      placeholder="Project Type *"
-                    />
-                  </div>
-                  <div className={styles.field}>
-                    <CustomSelect
-                      value={form.budget}
-                      onChange={setDropdown('budget')}
-                      options={BUDGETS}
-                      placeholder="Select Your Budget…"
-                    />
-                  </div>
-                </div>
-
+            <form className={styles.form} onSubmit={handleSubmit} noValidate>
+              <div className={styles.row}>
                 <div className={styles.field}>
-                  <textarea
-                    className={`${styles.input} ${styles.textarea}`}
-                    rows={5}
-                    value={form.message}
-                    onChange={set('message')}
-                    placeholder="Message *"
+                  <input
+                    className={styles.input}
+                    type="text"
+                    value={form.name}
+                    onChange={set('name')}
+                    placeholder="Name *"
                     required
                   />
                 </div>
-
-                <label className={styles.check}>
+                <div className={styles.field}>
                   <input
-                    type="checkbox"
-                    checked={form.save}
-                    onChange={(e) => setForm((f) => ({ ...f, save: e.target.checked }))}
+                    className={styles.input}
+                    type="email"
+                    value={form.email}
+                    onChange={set('email')}
+                    placeholder="Email Id *"
+                    required
                   />
-                  <span>Save my name and email in this browser for the next time I comment.</span>
-                </label>
+                </div>
+              </div>
 
-                {error && <p className={styles.formError}>{error}</p>}
+              <div className={styles.row}>
+                <div className={styles.field}>
+                  <CustomSelect
+                    value={form.type}
+                    onChange={setDropdown('type')}
+                    options={PROJECT_TYPES}
+                    placeholder="Project Type *"
+                  />
+                </div>
+                <div className={styles.field}>
+                  <CustomSelect
+                    value={form.budget}
+                    onChange={setDropdown('budget')}
+                    options={BUDGETS}
+                    placeholder="Select Your Budget…"
+                  />
+                </div>
+              </div>
 
-                <button type="submit" className={styles.submit} disabled={sending}>
-                  <span className={styles.submitArrow}>
-                    <ArrowIcon />
-                  </span>
-                  {sending ? 'Sending…' : 'Submit Query'}
-                </button>
-              </form>
-            )}
+              <div className={styles.field}>
+                <textarea
+                  className={`${styles.input} ${styles.textarea}`}
+                  rows={5}
+                  value={form.message}
+                  onChange={set('message')}
+                  placeholder="Message *"
+                  required
+                />
+              </div>
+
+              <label className={styles.check}>
+                <input
+                  type="checkbox"
+                  checked={form.save}
+                  onChange={(e) => setForm((f) => ({ ...f, save: e.target.checked }))}
+                />
+                <span>Save my name and email in this browser for the next time I comment.</span>
+              </label>
+
+              {error && <p className={styles.formError}>{error}</p>}
+
+              <button type="submit" className={styles.submit} disabled={sending}>
+                <span className={styles.submitArrow}>
+                  <ArrowIcon />
+                </span>
+                {sending ? 'Sending…' : 'Submit Query'}
+              </button>
+            </form>
           </div>
         </div>
       </section>

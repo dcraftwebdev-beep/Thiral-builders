@@ -201,6 +201,35 @@
   display: block;
 }
 
+/* ---- inline thank-you note (shown above the form, form stays visible) ---- */
+.thanksInline {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 22px;
+  margin-bottom: clamp(20px, 3vh, 28px);
+  background: rgba(192, 136, 60, 0.08);
+  border: 1px solid rgba(192, 136, 60, 0.35);
+  border-radius: 14px;
+}
+
+.thanksInlineTitle {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: clamp(15px, 1.3vw, 17px);
+  color: var(--brass, #C0883C);
+  margin: 0;
+}
+
+.thanksInlineCopy {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: clamp(14px, 1.2vw, 15px);
+  line-height: 1.6;
+  color: rgba(15, 17, 21, 0.66);
+  margin: 0;
+}
+
 /* ---- form ---- */
 .form {
   display: flex;
@@ -406,7 +435,7 @@
   height: 18px;
 }
 
-/* success */
+/* success (kept for any other usage; no longer used to replace the form) */
 .thanks {
   display: flex;
   flex-direction: column;

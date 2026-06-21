@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-const SITE_NAME = 'Lumora Studio';
+const SITE_NAME = ' Thiral Builders';
 
 export default function SEO({ title, description, image, type = 'website', url }) {
   const fullTitle = title ? `${title} — ${SITE_NAME}` : `${SITE_NAME} — Architecture & Interior Design`;

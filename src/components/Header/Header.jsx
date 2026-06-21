@@ -208,7 +208,7 @@ export default function Header() {
           </nav>
 
           {/* Desktop CTA */}
-          <Link to="https://wa.me/919655573600?text=Hi%20I%20am%20interested%20in%20your%20construction%20services" className={`thiral-btn thiral-btn--brass ${styles.cta}`}>
+          <Link to="https://wa.me/919655573600?text=Hi%20I%20am%20interested%20in%20your%20construction%20services" className={`thiral-btn thiral-btn--brass ${styles.cta}`} target="_blank" rel="noopener noreferrer">
             <span className="thiral-btn-arrow" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <path d="M100,44.896V55.104H94.82449A27.66327,27.66327,0,0,0,68.22692,81.70112v5.104H58.01937v-5.104A37.41244,37.41244,0,0,1,69.95209,55.104H.08V44.896H69.95209A37.41244,37.41244,0,0,1,58.01937,18.29888v-5.104H68.22692v5.104A27.67577,27.67577,0,0,0,94.89644,44.896Z" />
